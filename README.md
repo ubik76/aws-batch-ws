@@ -15,7 +15,7 @@ This workshop assumes that you run in the AWS **Oregon** Region (us-west-2)
 
 ## Prepare the Docker image
 
-* Download the "fetch-and-run" example code:
+* Download the workshop example code:
 
     * `git clone https://github.com/ubik76/aws-batch-ws`
     * `cd aws-batch-helpers/fetch-and-run`
@@ -42,6 +42,7 @@ This workshop assumes that you run in the AWS **Oregon** Region (us-west-2)
 * Create a simple job script and upload to S3
     * Replace <bucket> with the S3 bucket name you have created before
     * `aws s3 cp myjob.sh s3://<bucket>/myjob.sh`
+    * `aws s3 cp myjob.sh s3://<bucket>/myjobarray.sh`
 
 
 ## Configure AWS Batch
@@ -101,6 +102,8 @@ Now what we configured Batch, let’s take a look at what we have with the follo
 * `aws batch describe-compute-environments`
 * `aws batch describe-job-queues`
 * `aws batch describe-job-definitions`
+
+### Run your first job
 
 `aws batch submit-job --job-name my-job --job-queue test-queue --job-definition test-far`
 
