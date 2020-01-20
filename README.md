@@ -18,7 +18,7 @@ This workshop assumes that you run in the AWS **Oregon** Region (us-west-2)
 * Download the workshop example code:
 
     * `git clone https://github.com/ubik76/aws-batch-ws`
-    * `cd aws-batch-helpers/fetch-and-run`
+    * `cd aws-batch-ws`
 
 * Create the docker image
     * `docker build -t awsbatch/fetch_and_run .`
