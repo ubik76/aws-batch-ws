@@ -17,7 +17,7 @@ This workshop assumes that you run in the AWS **Oregon** Region (us-west-2)
 
 * Download the "fetch-and-run" example code:
 
-    * `git clone https://github.com/awslabs/aws-batch-helpers.git`
+    * `git clone https://github.com/ubik76/aws-batch-ws`
     * `cd aws-batch-helpers/fetch-and-run`
 
 * Create the docker image
@@ -103,5 +103,4 @@ Now what we configured Batch, let’s take a look at what we have with the follo
 * `aws batch describe-job-definitions`
 
 `aws batch submit-job --job-name my-job --job-queue test-queue --job-definition test-far`
-
 
