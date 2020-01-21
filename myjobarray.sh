@@ -1,8 +1,5 @@
 #!/bin/bash
 
-#AWS_BATCH_JOB_ARRAY_INDEX="test"
-#EXPORT_S3_BUCKET_URL="s3://batch-workshop-87d72c41"
-
 
 filename=job-$AWS_BATCH_JOB_ID-$AWS_BATCH_JOB_ARRAY_INDEX.out
 date >> $filename
