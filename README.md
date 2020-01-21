@@ -117,3 +117,5 @@ Now what we configured Batch, let’s take a look at what we have with the follo
 * For Job Queue, choose the queue you have defined before, for example: test-queue.
 * For Command, enter myjob.sh 60.
 
+### Try from the command line:
+* `aws batch submit-job --job-name my-job --job-queue myqueue --array-properties size=10 --job-definition mydef --container-overrides vcpus=1,memory=50,command=["myjobarray.sh","10"]`	
