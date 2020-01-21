@@ -116,10 +116,4 @@ Now what we configured Batch, let’s take a look at what we have with the follo
 * Choose the latest job definition.
 * For Job Queue, choose the queue you have defined before, for example: test-queue.
 * For Command, enter myjob.sh 60.
-* Choose "Validate Command".
 
-* Enter the following environment variables and then choose Submit job.
-    * Key=BATCH_FILE_TYPE, Value=script
-    * Key=BATCH_FILE_S3_URL, Value=s3:///myjob.sh.
-     
-    Don’t forget to use the correct URL for your file.
