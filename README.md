@@ -35,7 +35,7 @@ This workshop assumes that you run in the AWS **Oregon** Region (us-west-2)
     * In the IAM console, choose **Roles**, **Create New Role**.
     * Under type of trusted entity, choose **AWS service** then **Elastic Container Service**.
     * For use case, select **Elastic Container Service Task**, and choose Next: Permissions.
-    * On the Attach Policy page, type “AmazonS3ReadOnlyAccess” into the Filter field and then select the check box for that policy. Then, choose Next:Tags
+    * On the Attach Policy page, type “AmazonS3FullAccess” into the Filter field and then select the check box for that policy. Then, choose Next:Tags
     * Add the Tag, for example: Key=Name; Value=workshop
     * Enter a name for your new role, for example: **batchJobRole**, and choose Create Role. You see the details of the new role.
 
@@ -65,14 +65,13 @@ Once done scroll down to configure the rest of the CE (please use the default va
   * Maximum Price: 100
   * Allowed Instance Types: optimal
   * Allocation Strategy: SPOT_CAPACITY_OPTIMIZED
-  * **TODO** Select the AMI: On the AMI selection screen, tick the field Enable user-specified Ami ID then use the ID of the AMI generated with Packer.
   * Add a tag called "Name" and as a value choose a name for your instances created with Batch
   * Then click on Create to build your new Compute Environment.
 
 ### Setup a Job Queue
 Now we will setup a Job Queue. This is where you will submit your jobs. Those will be dispatched to the Compute Environment(s) of your choosing by order of priority.
 
-* Chose a name for your queue.
+* Chose a name for your queue, for example "test-queue"
 * Define a priority (1-500). This defines the priority of a Job Queue when a Compute environment is shared accross Job Queues (for example a Production Job Queue with a priority of 500 and a R&D Job Queue with a priority of 250).
 *  Select the Compute Environment created previously.
 * Then create your Job Queue.
@@ -81,7 +80,7 @@ Now we will setup a Job Queue. This is where you will submit your jobs. Those wi
 
 Go the the Job Definition screen and create a new one.
 
-* Select a job definition name
+* Select a job definition name, for example "test-def"
 * Input 5 for the number of attempts before declaring a job as failed.
 * Input 100 for the time between attempts in seconds.
 * Add the job role previously defined for ECS tasks to access the output S3 bucket on your behalf.
@@ -94,6 +93,11 @@ Go the the Job Definition screen and create a new one.
 * Environment Variable
 
      This will tell to the application running in your container where to export data. Use the variable name EXPORT_S3_BUCKET_URL and the value corresponds to the bucket you have previously created.
+     
+     You have to specify also the BATCH_FILE_S3_URL to your script, for example: BATCH_FILE_S3_URL=s3://batch-workshop-87d7dd41/myjobarray.sh
+     
+     Finally, you have to specify the type of file: BATCH_FILE_TYPE=script
+
 * Choose Create job definition.
 
 ### Describe your environment
@@ -105,5 +109,17 @@ Now what we configured Batch, let’s take a look at what we have with the follo
 
 ### Run your first job
 
-`aws batch submit-job --job-name my-job --job-queue test-queue --job-definition test-far`
+* In the AWS Batch console, choose Jobs, Submit Job.
 
+* Enter a name for the job, for example: script_test.
+
+* Choose the latest job definition.
+* For Job Queue, choose the queue you have defined before, for example: test-queue.
+* For Command, enter myjob.sh 60.
+* Choose "Validate Command".
+
+* Enter the following environment variables and then choose Submit job.
+    * Key=BATCH_FILE_TYPE, Value=script
+    * Key=BATCH_FILE_S3_URL, Value=s3:///myjob.sh.
+     
+    Don’t forget to use the correct URL for your file.
