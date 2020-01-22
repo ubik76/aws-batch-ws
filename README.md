@@ -20,6 +20,9 @@ This workshop assumes that you run in the AWS **Oregon** Region (us-west-2)
     * `git clone https://github.com/ubik76/aws-batch-ws`
     * `cd aws-batch-ws`
 
+* Edit the shell scripts to be executable
+    * `chmod +x *.sh`
+
 * Create the docker image
     * `docker build -t awsbatch/fetch_and_run .`
 * Create an ECR repository
@@ -42,7 +45,7 @@ This workshop assumes that you run in the AWS **Oregon** Region (us-west-2)
 * Create a simple job script and upload to S3
     * Replace <bucket> with the S3 bucket name you have created before
     * `aws s3 cp myjob.sh s3://<bucket>/myjob.sh`
-    * `aws s3 cp myjob.sh s3://<bucket>/myjobarray.sh`
+    * `aws s3 cp myjobarray.sh s3://<bucket>/myjobarray.sh`
 
 
 ## Configure AWS Batch
