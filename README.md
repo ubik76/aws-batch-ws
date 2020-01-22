@@ -21,7 +21,7 @@ This workshop assumes that you run in the AWS **Oregon** Region (us-west-2)
     * `cd aws-batch-ws`
 
 * Edit the shell scripts to be executable
-    * `chmod +x *.sh`
+    * `chmod a+x *.sh`
 
 * Create the docker image
     * `docker build -t awsbatch/fetch_and_run .`
