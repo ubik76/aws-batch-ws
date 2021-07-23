@@ -40,12 +40,14 @@ This workshop assumes that you run in the AWS **Oregon** Region (us-west-2)
     * For use case, select **Elastic Container Service Task**, and choose Next: Permissions.
     * On the Attach Policy page, type “AmazonS3FullAccess” into the Filter field and then select the check box for that policy. Then, choose Next:Tags
     * Add the Tag, for example: Key=Name; Value=workshop
-    * Enter a name for your new role, for example: **batchJobRole**, and choose Create Role. You see the details of the new role.
+    * Enter a name for your new role, for example: **batchJobRole**, and choose Create Role. You will see the details of the new role.
 
 * Create a simple job script and upload to S3
     * Replace <bucket> with the S3 bucket name you have created before
-    * `aws s3 cp myjob.sh s3://<bucket>/myjob.sh`
-    * `aws s3 cp myjobarray.sh s3://<bucket>/myjobarray.sh`
+    * `aws s3 cp myjob.sh s3://batch-workshop-${BUCKET_POSTFIX}/myjob.sh`
+    * `aws s3 cp myjobarray.sh s3://batch-workshop-${BUCKET_POSTFIX}/myjobarray.sh`
+
+
 
 
 ## Configure AWS Batch
@@ -58,9 +60,10 @@ To create a compute environment we will follow these steps:
 
 * Select Managed Compute Environment (CE), to let AWS Batch manage the auto-scaling of EC2 resources for you.
 * Name your Compute Environment.
-* Let Batch create a new service Role so it can manage resources on your behalf.
-* Let Batch create a new instance role to allow instances to call AWS APIs on your behalf.
+* In Service Role, let Batch create a new service Role so it can manage resources on your behalf.
+* In Instance Role, let Batch create a new instance Role
 * Select your EC2 key-pair (or none in our case)
+
 
 Once done scroll down to configure the rest of the CE (please use the default values for the other parameters)
 
@@ -86,6 +89,10 @@ Go the the Job Definition screen and create a new one.
 * Select a job definition name, for example "test-def"
 * Input 5 for the number of attempts before declaring a job as failed.
 * Input 100 for the time between attempts in seconds.
+
+
+![Screenshot of Job Definition #1](/images/job-definition-10.png)
+
 * Add the job role previously defined for ECS tasks to access the output S3 bucket on your behalf.
 * Add the container image with the repositoryUri generated when creating our ECR repository. If in doubt you can get the URI by running the command below in your terminal: 
 
@@ -118,7 +125,7 @@ Now what we configured Batch, let’s take a look at what we have with the follo
 
 * Choose the latest job definition.
 * For Job Queue, choose the queue you have defined before, for example: test-queue.
-* For Command, enter myjob.sh 60.
+* For Command, enter `myjob.sh 60`.
 
 ### Try from the command line:
 * `aws batch submit-job --job-name my-job --job-queue myqueue --array-properties size=10 --job-definition mydef --container-overrides vcpus=1,memory=50,command=["myjobarray.sh","10"]`	
