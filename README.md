@@ -7,7 +7,7 @@ This workshop assumes that you run in the AWS **Oregon** Region (us-west-2)
     * https://dashboard.eventengine.run/dashboard
 
 * Start the Cloud9 IDE
-    * https://www.hpcworkshops.com/02-aws-getting-started/05-start_cloud9.html
+    * https://www.hpcworkshops.com/02-aws-getting-started/04-start_cloud9.html
 * Create and S3 Bucket:
     * `BUCKET_POSTFIX=$(uuidgen --random | cut -d'-' -f1)`
     * `aws s3 mb s3://batch-workshop-${BUCKET_POSTFIX}`
