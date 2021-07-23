@@ -93,20 +93,18 @@ Go the the Job Definition screen and create a new one.
 
 ![Screenshot of Job Definition #1](/images/job-definition-10.png)
 
-* Add the job role previously defined for ECS tasks to access the output S3 bucket on your behalf.
 * Add the container image with the repositoryUri generated when creating our ECR repository. If in doubt you can get the URI by running the command below in your terminal: 
 
     `$(aws ecr describe-repositories --repository-names fetch-and-run --output text --query 'repositories[0].[repositoryUri]')`
 
 * For vCPUs, enter 1. For Memory, enter 500
-* For User, enter “nobody”.
-* Environment Variable
 
-     This will tell to the application running in your container where to export data. Use the variable name EXPORT_S3_BUCKET_URL and the value corresponds to the bucket you have previously created.
-     
-     You have to specify also the BATCH_FILE_S3_URL to your script, for example: BATCH_FILE_S3_URL=s3://batch-workshop-87d7dd41/myjobarray.sh
-     
-     Finally, you have to specify the type of file: BATCH_FILE_TYPE=script
+![Screenshot of Job Definition #2](/images/job-definition-20.png)
+
+* Add the job role previously defined for ECS tasks to access the output S3 bucket on your behalf.
+* In the Security panel, enter “nobody” for "User".
+
+![Screenshot of Job Definition #3](/images/job-definition-30.png)
 
 * Choose Create job definition.
 
@@ -125,7 +123,27 @@ Now what we configured Batch, let’s take a look at what we have with the follo
 
 * Choose the latest job definition.
 * For Job Queue, choose the queue you have defined before, for example: test-queue.
+
+![Screenshot of Job #1](/images/job-run-10.png)
+
+
 * For Command, enter `myjob.sh 60`.
 
-### Try from the command line:
+![Screenshot of Job #2](/images/job-run-20.png)
+
+* Environment Variable
+
+     This will tell to the application running in your container where to export data. Use the variable name EXPORT_S3_BUCKET_URL and the value corresponds to the bucket you have previously created.
+     
+     You have to specify also the BATCH_FILE_S3_URL to your script and the type of file (BATCH_FILE_TYPE), for example:
+     
+    * `BATCH_FILE_S3_URL=s3://batch-workshop-87d7dd41/myjobarray.sh`
+    * `BATCH_FILE_TYPE=script`
+
+![Screenshot of Job #3](/images/job-run-30.png)
+
+* Click on "Submit" to start your first job
+
+
+### Try also from the command line:
 * `aws batch submit-job --job-name my-job --job-queue myqueue --array-properties size=10 --job-definition mydef --container-overrides vcpus=1,memory=50,command=["myjobarray.sh","10"]`	
