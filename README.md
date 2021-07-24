@@ -1,4 +1,4 @@
-# Batch workshop for HPC
+# AWS Batch workshop
 
 This workshop assumes that you run in the AWS **Oregon** Region (us-west-2)
 
@@ -61,8 +61,8 @@ To create a compute environment we will follow these steps:
 * Select Managed Compute Environment (CE), to let AWS Batch manage the auto-scaling of EC2 resources for you.
 * Name your Compute Environment.
 * In Service Role, let Batch create a new service Role so it can manage resources on your behalf.
-* In Instance Role, let Batch create a new instance Role
-* Select your EC2 key-pair (or none in our case)
+* In "Additional Settings", in Instance Role, let Batch create a new instance Role
+* Leave the EC2 key-pair empty
 
 
 Once done scroll down to configure the rest of the CE (please use the default values for the other parameters)
@@ -93,7 +93,7 @@ Go the the Job Definition screen and create a new one.
 
 ![Screenshot of Job Definition #1](/images/job-definition-10.png)
 
-* Add the container image with the repositoryUri generated when creating our ECR repository. If in doubt you can get the URI by running the command below in your terminal: 
+* Add the container image with the repositoryUri generated when creating our ECR repository. If in doubt, check the URI from the ECR console or you can get the URI by running the command below in your terminal: 
 
     `$(aws ecr describe-repositories --repository-names fetch-and-run --output text --query 'repositories[0].[repositoryUri]')`
 
@@ -101,7 +101,8 @@ Go the the Job Definition screen and create a new one.
 
 ![Screenshot of Job Definition #2](/images/job-definition-20.png)
 
-* Add the job role previously defined for ECS tasks to access the output S3 bucket on your behalf.
+* In "Additional configuration", add the job role previously defined for ECS tasks to access the output S3 bucket on your behalf.
+* Set "Execution Role" to "None".
 * In the Security panel, enter “nobody” for "User".
 
 ![Screenshot of Job Definition #3](/images/job-definition-30.png)
@@ -119,7 +120,7 @@ Now what we configured Batch, let’s take a look at what we have with the follo
 
 * In the AWS Batch console, choose Jobs, Submit Job.
 
-* Enter a name for the job, for example: script_test.
+* Enter a name for the job, for example: `test`.
 
 * Choose the latest job definition.
 * For Job Queue, choose the queue you have defined before, for example: test-queue.
@@ -137,7 +138,7 @@ Now what we configured Batch, let’s take a look at what we have with the follo
      
      You have to specify also the BATCH_FILE_S3_URL to your script and the type of file (BATCH_FILE_TYPE), for example:
      
-    * `BATCH_FILE_S3_URL=s3://batch-workshop-87d7dd41/myjobarray.sh`
+    * `BATCH_FILE_S3_URL=s3://batch-workshop-87d7dd41/myjob.sh`
     * `BATCH_FILE_TYPE=script`
 
 ![Screenshot of Job #3](/images/job-run-30.png)
@@ -146,4 +147,5 @@ Now what we configured Batch, let’s take a look at what we have with the follo
 
 
 ### Try also from the command line:
-* `aws batch submit-job --job-name my-job --job-queue myqueue --array-properties size=10 --job-definition mydef --container-overrides vcpus=1,memory=50,command=["myjobarray.sh","10"]`	
+* Edit the `submit-json` file according to your configuration and then submit the job via the CLI:
+* `aws batch submit-job --cli-input-json file://submit.json`	
