@@ -95,7 +95,7 @@ Go the the Job Definition screen and create a new one.
 
 * Add the container image with the repositoryUri generated when creating our ECR repository. If in doubt, check the URI from the ECR console or you can get the URI by running the command below in your terminal: 
 
-    `$(aws ecr describe-repositories --repository-names fetch-and-run --output text --query 'repositories[0].[repositoryUri]')`
+    `aws ecr describe-repositories --repository-names fetch-and-run --output text --query 'repositories[0].[repositoryUri]'`
 
 * For vCPUs, enter 1. For Memory, enter 500
 
